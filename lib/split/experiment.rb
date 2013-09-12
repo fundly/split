@@ -73,6 +73,7 @@ module Split
         start unless Split.configuration.start_manually
         @alternatives.reverse.each {|a| Split.redis.lpush(name, a.name)}
         @goals.reverse.each {|a| Split.redis.lpush(goals_key, a)} unless @goals.nil?
+        Split.configuration.on_experiment_create.call(self)
       else
 
         existing_alternatives = load_alternatives_from_redis
